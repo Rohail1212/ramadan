@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan</title>
+    <link rel="stylesheet" href="Ramadan.css">
+
+</head>
+
+
+<body>
+
+<div id="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="Ramadan.html">Ramadan</a>
+    <a href="prayer.html">Prayer time</a>
+</div>
+
+<div id="main">
+    <span style="font-size:30px;cursor:pointer;color: white;" onclick="openNav()">☰</span>
+
+  <div class="container">
+
+    <h1>Ramadan Countdown</h1>
+    <h4>by Ch Rohail</h4>
+  
+    <div id="countdown"></div>
+  
+    <h2>Suhoor and Iftar Timers</h2>
+    <div id="timers"></div>
+    <div id="suhoor"></div>
+  <div id="iftar"></div>
+  <audio id="alarmAudio" src="azan1.mp3" preload="auto"></audio>
+  <div id="alarm">Alarm!</div>
+    </div>
+  
+
+  
+</div>
+
+<script>
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+    }
+
+
+  // Replace the placeholder dates with the actual start date of Ramadan
+  const ramadanStartDate = new Date('March 09, 2024 18:00:00 GMT+00:00');
+
+function updateCountdown() {
+  const currentDate = new Date();
+  const timeDiff = ramadanStartDate - currentDate;
+
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+  document.getElementById('countdown').innerHTML = `Time until Ramadan: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+function updateTimers() {
+  // Replace the placeholder times with the actual Suhoor and Iftar times
+  const suhoorTime = new Date('March 09, 2024 11:30:00 GMT+00:00');
+  const iftarTime = new Date('March 09, 2024 22:40:00 GMT+00:00');
+  
+
+  const suhoorTimer = suhoorTime.toLocaleTimeString('en-US');
+  const iftarTimer = iftarTime.toLocaleTimeString('en-US');
+
+  document.getElementById('timers').innerHTML = `Suhoor Time: ${suhoorTimer} | Iftar Time: ${iftarTimer}`;
+}
+
+function update() {
+  updateCountdown();
+  updateTimers();
+}
+
+// Initial update
+update();
+
+// Update every second
+setInterval(update, 1000);
+
+
+ // Function to calculate the time remaining until a specific date
+function calculateTimeRemaining(endDate) {
+const now = new Date();
+const difference = endDate - now;
+
+const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+const minutes = Math.floor((difference / 1000 / 60) % 60);
+const seconds = Math.floor((difference / 1000) % 60);
+
+return { hours, minutes, seconds };
+}
+
+// Function to update Suhoor and Iftar timings
+function updateTimings() {
+const suhoorEndDate = new Date("April 10, 2024 05:30:00"); // Example Suhoor time
+const iftarEndDate = new Date("April 10, 2024 18:00:00"); // Example Iftar time
+
+
+
+const suhoorTimeRemaining = calculateTimeRemaining(suhoorEndDate);
+const iftarTimeRemaining = calculateTimeRemaining(iftarEndDate);
+
+document.getElementById("suhoor").innerHTML = `Suhoor: ${suhoorTimeRemaining.hours}h ${suhoorTimeRemaining.minutes}m ${suhoorTimeRemaining.seconds}s`;
+document.getElementById("iftar").innerHTML = `Iftar: ${iftarTimeRemaining.hours}h ${iftarTimeRemaining.minutes}m ${iftarTimeRemaining.seconds}s`;
+
+// Check if it's time for Suhoor or Iftar and trigger the alarm
+if (suhoorTimeRemaining.hours === 0 && suhoorTimeRemaining.minutes === 0 && suhoorTimeRemaining.seconds === 0) {
+  triggerAlarm();
+} else if (iftarTimeRemaining.hours === 0 && iftarTimeRemaining.minutes === 0 && iftarTimeRemaining.seconds === 0) {
+  triggerAlarm();
+}
+}
+
+// Function to play the alarm and show a message
+function triggerAlarm() {
+const alarmAudio = document.getElementById("alarmAudio");
+const alarmMessage = document.getElementById("alarm");
+
+alarmAudio.play();
+alarmMessage.style.display = "block";
+
+// You can add additional logic here, such as animations or further actions
+}
+
+// Update Suhoor and Iftar timings every second
+setInterval(updateTimings, 1000);
+
+// Initial update
+updateTimings();
+</script>
+</body>
+</html>
